@@ -18,6 +18,7 @@ public class Casino extends javax.swing.JFrame {
      */
     public Casino() {
         initComponents();
+        errorText.setVisible(false);
     }
 
     /**
@@ -35,6 +36,7 @@ public class Casino extends javax.swing.JFrame {
         passwField = new java.awt.TextField();
         tittleMainLabel = new java.awt.Label();
         ingresarButt = new javax.swing.JButton();
+        errorText = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(0, 204, 153));
@@ -47,6 +49,11 @@ public class Casino extends javax.swing.JFrame {
 
         userField.setMinimumSize(new java.awt.Dimension(200, 20));
         userField.setPreferredSize(new java.awt.Dimension(100, 20));
+        userField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                userFieldActionPerformed(evt);
+            }
+        });
 
         passwField.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
         passwField.setMinimumSize(new java.awt.Dimension(200, 20));
@@ -69,6 +76,12 @@ public class Casino extends javax.swing.JFrame {
             }
         });
 
+        errorText.setForeground(new java.awt.Color(255, 0, 0));
+        errorText.setText("Error: Usuario o Contraseña incorrecto");
+        errorText.setMaximumSize(new java.awt.Dimension(250, 14));
+        errorText.setMinimumSize(new java.awt.Dimension(250, 14));
+        errorText.setPreferredSize(new java.awt.Dimension(250, 14));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -84,11 +97,16 @@ public class Casino extends javax.swing.JFrame {
                     .addComponent(passwField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(149, 149, 149))
             .addGroup(layout.createSequentialGroup()
-                .addGap(70, 70, 70)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(tittleMainLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(ingresarButt))
-                .addGap(54, 54, 54))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(67, 67, 67)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(tittleMainLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(ingresarButt, javax.swing.GroupLayout.Alignment.TRAILING)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(82, 82, 82)
+                        .addComponent(errorText, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -104,7 +122,9 @@ public class Casino extends javax.swing.JFrame {
                         .addGap(5, 5, 5)
                         .addComponent(passwField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(passwLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(69, 69, 69)
+                .addGap(25, 25, 25)
+                .addComponent(errorText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(30, 30, 30)
                 .addComponent(ingresarButt)
                 .addContainerGap(85, Short.MAX_VALUE))
         );
@@ -116,13 +136,35 @@ public class Casino extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void ingresarButtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ingresarButtActionPerformed
-        // TODO add your handling code here:
-        JOptionPane.showMessageDialog(null, "Bienvenido");
+        // acction boton ingresar 
+        //JOptionPane.showMessageDialog(null, "Bienvenido");
+        System.out.println("boton enviar");
+        String user = userField.getText();
+        String pass = passwField.getText();
+        Userlogin usuario = new Userlogin ();
+        UserBusinessImpl ubi = new UserBusinessImpl();
+        usuario = ubi.getUser();
+        errorText.setVisible(false);
+        if(user.equals(usuario.getUser()) && pass.equals(usuario.getPassword())){
+            JOptionPane.showMessageDialog(null, "Bienvenido!");
+            MenuInicio vm = new MenuInicio();
+            vm.setVisible(true);
+            this.dispose();
+        }else{
+            errorText.setVisible(true);
+            userField.setText("");
+            passwField.setText("");
+        }
     }//GEN-LAST:event_ingresarButtActionPerformed
 
     private void passwFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_passwFieldActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_passwFieldActionPerformed
+
+    private void userFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_userFieldActionPerformed
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_userFieldActionPerformed
 
     /**
      * @param args the command line arguments
@@ -162,6 +204,7 @@ public class Casino extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel errorText;
     private javax.swing.JButton ingresarButt;
     private java.awt.TextField passwField;
     private java.awt.Label passwLabel;
